@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المعالجات الإحصائية في دراسات علم المعلومات</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #080e1a;
+      --surface:  #0e1729;
+      --card:     #111f35;
+      --card2:    #162540;
+      --border:   rgba(99,179,255,0.12);
+      --accent:   #3b82f6;
+      --accent2:  #60a5fa;
+      --accent3:  #8b5cf6;
+      --success:  #10b981;
+      --gold:     #f59e0b;
+      --glow:     rgba(59,130,246,0.25);
+      --text:     #e2eaf5;
+      --muted:    #64748b;
+      --radius:   16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ─── BACKGROUND ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 5%,  rgba(59,130,246,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 85% 85%, rgba(139,92,246,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(16,185,129,0.04) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── WRAP ─── */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 860px;
+      padding: 48px 24px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      text-align: center;
+      animation: fadeDown .7s ease both;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.3);
+      color: var(--accent2);
+      font-size: .78em;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 5px 20px;
+      border-radius: 50px;
+      margin-bottom: 22px;
+    }
+
+    .header-badge span {
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .header h1 {
+      font-size: clamp(1.7em, 4.5vw, 2.8em);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .header h1 .highlight {
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header .subtitle {
+      font-size: 1em;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .header .subtitle strong {
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: .75em;
+      letter-spacing: 2px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── CARDS GRID ─── */
+    .cards {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      animation: fadeUp .8s ease .2s both;
+    }
+
+    .card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px 24px 26px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--card-glow, rgba(59,130,246,0.06)), transparent 60%);
+      pointer-events: none;
+      transition: opacity .25s ease;
+      opacity: 0;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--card-accent, var(--accent));
+      box-shadow: 0 0 28px var(--card-shadow, rgba(59,130,246,0.18));
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    /* card colour variants */
+    .card-blue  { --card-accent: #3b82f6; --card-shadow: rgba(59,130,246,0.2);  --card-glow: rgba(59,130,246,0.08); }
+    .card-purple{ --card-accent: #8b5cf6; --card-shadow: rgba(139,92,246,0.2);  --card-glow: rgba(139,92,246,0.08); }
+    .card-teal  { --card-accent: #10b981; --card-shadow: rgba(16,185,129,0.2);  --card-glow: rgba(16,185,129,0.08); }
+
+    .card-icon {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6em;
+      background: var(--icon-bg, rgba(59,130,246,0.12));
+      border: 1px solid var(--icon-border, rgba(59,130,246,0.25));
+      flex-shrink: 0;
+    }
+
+    .card-blue   .card-icon { --icon-bg: rgba(59,130,246,0.12);  --icon-border: rgba(59,130,246,0.25); }
+    .card-purple .card-icon { --icon-bg: rgba(139,92,246,0.12);  --icon-border: rgba(139,92,246,0.25); }
+    .card-teal   .card-icon { --icon-bg: rgba(16,185,129,0.12);  --icon-border: rgba(16,185,129,0.25); }
+
+    .card-body h2 {
+      font-size: 1.05em;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .card-body p {
+      font-size: .82em;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .card-arrow {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .78em;
+      font-weight: 700;
+      color: var(--card-accent, var(--accent));
+      letter-spacing: 1px;
+      transition: gap .2s ease;
+    }
+
+    .card:hover .card-arrow { gap: 10px; }
+
+    .card-arrow svg {
+      width: 14px; height: 14px;
+      /* flip for RTL arrow direction */
+      transform: scaleX(-1);
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      font-size: .75em;
+      color: var(--muted);
+      text-align: center;
+      animation: fadeUp .8s ease .4s both;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; box-shadow: 0 0 8px var(--accent); }
+      50%      { opacity: .5; box-shadow: 0 0 4px var(--accent); }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <div class="wrap">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-badge">
+        <span></span>
+        أدوات إحصائية متقدمة
+      </div>
+      <h1>المعالجات الإحصائية<br>في <span class="highlight">دراسات علم المعلومات</span></h1>
+      <p class="subtitle">تصميم وتطوير: <strong>طلال ناظم الزهيري</strong></p>
+    </header>
+
+    <div class="divider">اختر الأداة</div>
+
+    <!-- CARDS -->
+    <div class="cards">
+
+      <!-- Tool 1 -->
+      <a href="static.html" class="card card-blue">
+        <div class="card-icon">📊</div>
+        <div class="card-body">
+          <h2>الوسط المرجح والانحراف المعياري</h2>
+          <p>حساب المتوسطات المرجحة والانحراف المعياري وتحليل بيانات مقياس ليكرت</p>
+        </div>
+        <div class="card-arrow">
+          ابدأ التحليل
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </div>
+      </a>
+
+      <!-- Tool 2 -->
+      <a href="Person.html" class="card card-purple">
+        <div class="card-icon">🔗</div>
+        <div class="card-body">
+          <h2>معاملات الارتباط</h2>
+          <p>حساب معاملي ارتباط بيرسون وسبيرمان وتفسير قوة العلاقة بين المتغيرات</p>
+        </div>
+        <div class="card-arrow">
+          ابدأ التحليل
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </div>
+      </a>
+
+      <!-- Tool 3 -->
+      <a href="alfa.html" class="card card-teal">
+        <div class="card-icon">🔬</div>
+        <div class="card-body">
+          <h2>معامل كرونباخ-ألفا</h2>
+          <p>قياس ثبات الاستبانة وموثوقية الأداة البحثية باستخدام معامل الاتساق الداخلي</p>
+        </div>
+        <div class="card-arrow">
+          ابدأ التحليل
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </div>
+      </a>
+	  <!-- Tool 4 -->
+      <a href="t-test.html" class="card card-teal">
+        <div class="card-icon">🔬</div>
+        <div class="card-body">
+          <h2>اختبار T</h2>
+          <p>حساب اختبار ت للانواع الثلاثة من العينات مع التحقق من الافترضات</p>
+        </div>
+        <div class="card-arrow">
+          ابدأ التحليل
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      جميع العمليات الحسابية تُنفَّذ محلياً في المتصفح · لا يُرسَل أي بيانات خارجياً
+    </footer>
+
+  </div>
+</body>
+</html>

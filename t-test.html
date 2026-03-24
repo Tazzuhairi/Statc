@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>تحليل T الإحصائي الاحترافي | عينات مستقلة ومرتبطة</title>
+<!-- استيراد خط Cairo من Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface-elevated: #fefefe;
+  --surface2: #f8fafc;
+  --border: #e9edf2;
+  --border2: #dce2e8;
+  --text: #0a1e2f;
+  --text2: #49627c;
+  --text3: #8196ab;
+  --blue: #1f6392;
+  --blue-dark: #155d88;
+  --blue-bg: #eef4fc;
+  --blue-border: #cde2f5;
+  --green: #2b7e5c;
+  --green-bg: #edf8f2;
+  --green-border: #b8e0cd;
+  --amber: #b85c1a;
+  --amber-bg: #fff5ea;
+  --amber-border: #ffdead;
+  --red: #b91c1c;
+  --red-bg: #fef2f2;
+  --red-border: #fbc4c4;
+  --radius: 20px;
+  --radius-sm: 12px;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
+  --transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  font-family: 'Cairo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--text);
+  padding: 32px 20px 80px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page-header {
+  max-width: 800px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+.page-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #1f6392 0%, #2b8c5c 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  letter-spacing: -0.2px;
+  margin-bottom: 6px;
+}
+.page-sub {
+  font-size: 0.85rem;
+  color: var(--text3);
+  border-top: 1px solid var(--border);
+  display: inline-block;
+  padding-top: 6px;
+  font-weight: 500;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--surface);
+  padding: 6px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  margin-bottom: 28px;
+  backdrop-filter: blur(2px);
+  box-shadow: var(--shadow-sm);
+}
+.tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px 8px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 60px;
+  color: var(--text2);
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  line-height: 1.4;
+}
+.tab span {
+  font-size: 0.7rem;
+  font-weight: 500;
+  opacity: 0.75;
+  display: block;
+}
+.tab:hover { background: var(--surface2); color: var(--text); }
+.tab.active {
+  background: var(--blue);
+  color: white;
+  box-shadow: 0 4px 10px rgba(31, 99, 146, 0.2);
+}
+.tab.active span { color: rgba(255,255,240,0.9); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 30px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s;
+}
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+.sec-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 20px;
+  border-right: 3px solid var(--blue);
+  padding-right: 12px;
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+.field {
+  margin-bottom: 20px;
+}
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 8px;
+}
+.field-hint {
+  font-size: 0.7rem;
+  color: var(--text3);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+input, select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  font-family: 'Cairo', monospace;
+  background: var(--surface2);
+  border: 1.5px solid var(--border2);
+  border-radius: 16px;
+  transition: var(--transition);
+  color: var(--text);
+  direction: ltr;
+  text-align: left;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(31,99,146,0.2);
+  background: white;
+}
+textarea {
+  font-family: 'Cairo', monospace;
+  resize: vertical;
+  line-height: 1.65;
+  min-height: 96px;
+}
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8'%3E%3Cpath fill='%2349627c' d='M1 1l6 5 6-5' stroke='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 16px center;
+  padding-left: 38px;
+  font-family: 'Cairo', sans-serif;
+}
+
+.calc-btn {
+  background: linear-gradient(105deg, #1f6392 0%, #217a6e 100%);
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 40px;
+  color: white;
+  margin-top: 18px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  letter-spacing: 0.3px;
+  font-family: 'Cairo', sans-serif;
+}
+.calc-btn:hover {
+  background: linear-gradient(105deg, #155d88 0%, #1b6b5f 100%);
+  box-shadow: 0 8px 18px rgba(31,99,146,0.25);
+  transform: translateY(-1px);
+}
+.calc-btn:active { transform: translateY(1px); }
+
+.metric-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.metric {
+  background: var(--surface2);
+  border-radius: 24px;
+  padding: 16px 10px;
+  text-align: center;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.metric-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+.metric-val {
+  font-size: 1.8rem;
+  font-weight: 800;
+  font-family: 'Cairo', monospace;
+  color: var(--blue-dark);
+  line-height: 1.2;
+}
+.verdict {
+  border-radius: 40px;
+  padding: 14px 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.v-sig { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.v-nosig { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+.formula-box {
+  background: #f1f5f9;
+  border-radius: 20px;
+  padding: 18px 20px;
+  font-family: 'Cairo', monospace;
+  font-size: 0.8rem;
+  text-align: center;
+  color: #0c4e6e;
+  margin-bottom: 20px;
+  border-right: 4px solid var(--blue);
+  direction: ltr;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-weight: 500;
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+  margin-bottom: 24px;
+}
+.detail-table td {
+  padding: 10px 6px;
+  background: var(--surface2);
+  border-radius: 12px;
+}
+.detail-table td:first-child {
+  font-weight: 700;
+  color: var(--text2);
+  width: 48%;
+  padding-right: 16px;
+}
+.detail-table td:last-child {
+  font-family: 'Cairo', monospace;
+  font-weight: 600;
+  direction: ltr;
+  text-align: left;
+  padding-left: 16px;
+}
+
+.assump-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #ffffff;
+  padding: 12px 14px;
+  border-radius: 16px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.ai-ok { color: var(--green); font-weight: bold; font-size: 1rem; }
+.ai-warn { color: var(--amber); font-weight: bold; }
+
+.interp-box {
+  background: var(--blue-bg);
+  border-radius: 24px;
+  padding: 18px 22px;
+  border: 1px solid var(--blue-border);
+  color: #1a4d6b;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.interp-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--blue);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.error-box {
+  background: var(--red-bg);
+  border-radius: 20px;
+  padding: 16px;
+  font-weight: 700;
+  color: var(--red);
+  border-right: 5px solid var(--red);
+  margin-top: 16px;
+  font-family: 'Cairo', sans-serif;
+}
+
+.panel { display: none; animation: fadeIn 0.25s ease; }
+.panel.show { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 620px) {
+  body { padding: 20px 14px; }
+  .card { padding: 20px 18px; }
+  .row2 { grid-template-columns: 1fr; gap: 6px; }
+  .metric-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tab { font-size: 0.7rem; }
+  .page-title { font-size: 1.6rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">📊 اختبار T الإحصائي الاحترافي</div>
+  <div class="page-sub">اختبارات المتوسطات | عينة واحدة | عينات مستقلة | عينات مرتبطة</div>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('one',this)">📌 عينة واحدة <span>مقارنة بقيمة ثابتة</span></button>
+    <button class="tab" onclick="switchTab('ind',this)">⚖️ عينات مستقلة <span>مجموعتان مستقلتان</span></button>
+    <button class="tab" onclick="switchTab('pair',this)">🔄 عينات مرتبطة <span>قبل وبعد</span></button>
+  </div>
+
+  <!-- عينة واحدة -->
+  <div class="panel show" id="p-one">
+    <div class="card">
+      <div class="sec-label">🔍 إعدادات التحليل</div>
+      <div class="row2">
+        <div class="field"><label class="field-label">📌 القيمة المرجعية (μ₀)</label><input type="number" id="one-mu" value="70" step="any"></div>
+        <div class="field"><label class="field-label">📊 مستوى الدلالة α</label><select id="one-alpha"><option value="0.05">0.05 (ثقة 95%)</option><option value="0.01">0.01 (ثقة 99%)</option><option value="0.10">0.10 (ثقة 90%)</option></select></div>
+      </div>
+      <div class="field"><label class="field-label">🎯 اتجاه الاختبار</label><select id="one-tails"><option value="2">اختبار ثنائي الطرف (اختلاف في أي اتجاه)</option><option value="1">اختبار أحادي الطرف (زيادة أو نقصان محدد)</option></select></div>
+      <div class="divider" style="height:1px; background:#e2e8f0; margin:16px 0;"></div>
+      <div class="sec-label">📋 بيانات العينة</div>
+      <div class="field"><label class="field-label">أدخل القيم (أرقام مفصولة بفاصلة أو مسافة)</label><textarea id="one-data" placeholder="مثال: 65, 72, 68, 75, 70, 63, 77, 69, 71, 74">65, 72, 68, 75, 70, 63, 77, 69, 71, 74</textarea><div class="field-hint">💡 يمكنك لصق عمود من Excel مباشرة</div></div>
+      <button class="calc-btn" onclick="calcOne()">▶ احسب اختبار T لعينة واحدة</button>
+    </div>
+    <div id="res-one"></div>
+  </div>
+
+  <!-- عينات مستقلة -->
+  <div class="panel" id="p-ind">
+    <div class="card">
+      <div class="sec-label">⚙️ إعدادات مستقلة</div>
+      <div class="row2">
+        <div class="field"><label class="field-label">📊 مستوى الدلالة α</label><select id="ind-alpha"><option value="0.05">0.05</option><option value="0.01">0.01</option><option value="0.10">0.10</option></select></div>
+        <div class="field"><label class="field-label">🎯 اتجاه الاختبار</label><select id="ind-tails"><option value="2">ثنائي الطرف</option><option value="1">أحادي الطرف</option></select></div>
+      </div>
+      <div class="sec-label">📂 المجموعة الأولى (المجموعة المرجعية)</div>
+      <textarea id="ind-d1" rows="3" placeholder="مثال: 72, 68, 75, 70, 65, 77, 69, 74, 71, 73">72, 68, 75, 70, 65, 77, 69, 74, 71, 73</textarea>
+      <div class="sec-label" style="margin-top: 16px;">📂 المجموعة الثانية (المقارنة)</div>
+      <textarea id="ind-d2" rows="3" placeholder="مثال: 60, 64, 58, 67, 62, 55, 66, 61, 63, 59">60, 64, 58, 67, 62, 55, 66, 61, 63, 59</textarea>
+      <button class="calc-btn" onclick="calcInd()">▶ حساب T للعينات المستقلة</button>
+    </div>
+    <div id="res-ind"></div>
+  </div>
+
+  <!-- مرتبطة -->
+  <div class="panel" id="p-pair">
+    <div class="card">
+      <div class="sec-label">🔄 إعدادات العينات المرتبطة</div>
+      <div class="row2">
+        <div class="field"><label class="field-label">مستوى الدلالة α</label><select id="pair-alpha"><option value="0.05">0.05</option><option value="0.01">0.01</option><option value="0.10">0.10</option></select></div>
+        <div class="field"><label class="field-label">اتجاه الاختبار</label><select id="pair-tails"><option value="2">ثنائي الطرف</option><option value="1">أحادي الطرف</option></select></div>
+      </div>
+      <div class="sec-label">📉 قبل التدخل (pre)</div>
+      <textarea id="pair-pre" rows="3" placeholder="55, 60, 52, 58, 63, 57, 61, 54, 59, 62">55, 60, 52, 58, 63, 57, 61, 54, 59, 62</textarea>
+      <div class="sec-label" style="margin-top: 16px;">📈 بعد التدخل (post)</div>
+      <textarea id="pair-post" rows="3" placeholder="68, 72, 65, 70, 75, 69, 73, 66, 71, 74">68, 72, 65, 70, 75, 69, 73, 66, 71, 74</textarea>
+      <button class="calc-btn" onclick="calcPair()">▶ حساب T للعينات المرتبطة</button>
+    </div>
+    <div id="res-pair"></div>
+  </div>
+</div>
+
+<script>
+function switchTab(t, btn) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.panel').forEach((p, idx) => {
+    const ids = ['p-one', 'p-ind', 'p-pair'];
+    p.classList.toggle('show', ids[idx] === `p-${t}`);
+  });
+}
+
+function parseInput(id) {
+  const raw = document.getElementById(id).value;
+  const numbers = raw.split(/[\s,;\n\t]+/).map(v => v.trim()).filter(v => v !== '').map(Number).filter(v => !isNaN(v));
+  return numbers;
+}
+
+const mean = arr => arr.reduce((s,v)=>s+v,0)/arr.length;
+const variance = arr => { const m=mean(arr); return arr.reduce((s,v)=>s+(v-m)**2,0)/(arr.length-1); };
+const sd = arr => Math.sqrt(variance(arr));
+const fmt = (n, d=3) => Number(n).toFixed(d);
+
+// دالة حساب القيمة الاحتمالية (p-value) باستخدام توزيع T
+function tCDF(t, df) {
+  // حساب القيمة الاحتمالية باستخدام دالة التوزيع التراكمي لـ T
+  t = Math.abs(t);
+  const x = df / (df + t * t);
+  
+  // دالة beta غير المكتملة
+  function betainc(x, a, b) {
+    const maxIter = 200;
+    const eps = 1e-8;
+    if (x === 0) return 0;
+    if (x === 1) return 1;
+    
+    let bt = Math.exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+    if (x < (a + 1) / (a + b + 2)) {
+      return bt * betacf(a, b, x) / a;
+    } else {
+      return 1 - bt * betacf(b, a, 1 - x) / b;
+    }
+  }
+  
+  function betacf(a, b, x) {
+    const maxIter = 200;
+    const eps = 1e-8;
+    let qab = a + b;
+    let qap = a + 1;
+    let qam = a - 1;
+    let c = 1;
+    let d = 1 - qab * x / qap;
+    if (Math.abs(d) < 1e-30) d = 1e-30;
+    d = 1 / d;
+    let h = d;
+    for (let m = 1; m <= maxIter; m++) {
+      let m2 = 2 * m;
+      let aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+      d = 1 + aa * d;
+      if (Math.abs(d) < 1e-30) d = 1e-30;
+      c = 1 + aa / c;
+      if (Math.abs(c) < 1e-30) c = 1e-30;
+      d = 1 / d;
+      h *= d * c;
+      aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+      d = 1 + aa * d;
+      if (Math.abs(d) < 1e-30) d = 1e-30;
+      c = 1 + aa / c;
+      if (Math.abs(c) < 1e-30) c = 1e-30;
+      d = 1 / d;
+      let del = d * c;
+      h *= del;
+      if (Math.abs(del - 1) < eps) break;
+    }
+    return h;
+  }
+  
+  function lgamma(z) {
+    const c = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
+    let y = z;
+    let tmp = z + 5.5;
+    tmp -= (z + 0.5) * Math.log(tmp);
+    let ser = 1.000000000190015;
+    for (let j = 0; j < 6; j++) ser += c[j] / ++y;
+    return -tmp + Math.log(2.5066282746310005 * ser / z);
+  }
+  
+  const p = betainc(x, df / 2, 0.5);
+  return 1 - p;
+}
+
+function pValue(t, df, tails) {
+  const p = tCDF(t, df);
+  return tails === 2 ? p * 2 : p;
+}
+
+function tCritical(alpha, df, tails) {
+  // حساب القيمة الحرجة باستخدام البحث الثنائي
+  let target = tails === 2 ? alpha / 2 : alpha;
+  let lo = 0, hi = 10;
+  for (let i = 0; i < 100; i++) {
+    let mid = (lo + hi) / 2;
+    let p = tCDF(mid, df);
+    if (p > target) {
+      hi = mid;
+    } else {
+      lo = mid;
+    }
+  }
+  return (lo + hi) / 2;
+}
+
+function leveneTest(a,b) {
+  const m1=mean(a), m2=mean(b);
+  const z1=a.map(v=>Math.abs(v-m1)), z2=b.map(v=>Math.abs(v-m2));
+  const n1=a.length, n2=b.length, N=n1+n2;
+  const zm=mean([...z1,...z2]), mz1=mean(z1), mz2=mean(z2);
+  const num = (N-2)*( n1*(mz1-zm)**2 + n2*(mz2-zm)**2 );
+  const den = [...z1.map(v=>(v-mz1)**2), ...z2.map(v=>(v-mz2)**2)].reduce((s,v)=>s+v,0);
+  if(den===0) return {F:0, p:1};
+  const F = num/den;
+  const p = pValue(Math.sqrt(F)*Math.sqrt(N-2), N-2, 2);
+  return {F, p};
+}
+function cohenCategory(d) { if(d<0.2) return 'ضئيل'; if(d<0.5) return 'صغير'; if(d<0.8) return 'متوسط'; return 'كبير'; }
+
+function renderResult(containerId, res) {
+  const sig = res.p <= res.alpha;
+  const pDisplay = res.p < 0.0001 ? '< 0.0001' : fmt(res.p, 4);
+  document.getElementById(containerId).innerHTML = `
+    <div class="card">
+      <div class="sec-label">📐 مخرجات الاختبار</div>
+      <div class="metric-row">
+        <div class="metric"><div class="metric-label">قيمة t المحسوبة</div><div class="metric-val">${fmt(res.t,3)}</div></div>
+        <div class="metric"><div class="metric-label">القيمة الاحتمالية p</div><div class="metric-val" style="color:${sig?'var(--green)':'var(--amber)'}">${pDisplay}</div></div>
+        <div class="metric"><div class="metric-label">درجات الحرية df</div><div class="metric-val">${res.df}</div></div>
+      </div>
+      <div class="verdict ${sig?'v-sig':'v-nosig'}">
+        ${sig ? '✨ دال إحصائياً – رفض H₀' : '🔍 غير دال إحصائياً – قبول H₀'} &nbsp;| α = ${res.alpha}
+      </div>
+      <div class="formula-box">${res.formula}</div>
+      <table class="detail-table">${res.rows.map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</table>
+      <div class="sec-label">📌 التحقق من الافتراضات</div>
+      ${res.assumptions.map(a=>`<div class="assump-item"><span class="${a.ok?'ai-ok':'ai-warn'}">${a.ok?'✔️':'⚠️'}</span><span>${a.text}</span></div>`).join('')}
+      <div class="divider" style="margin:16px 0; height:1px; background:var(--border);"></div>
+      <div class="sec-label">📄 صياغة أكاديمية (APA Style)</div>
+      <div class="interp-box"><div class="interp-label">📝 التقرير الإحصائي</div>${res.interp}</div>
+    </div>`;
+  document.getElementById(containerId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function calcOne() {
+  const data = parseInput('one-data');
+  if(data.length < 2) {
+    showErr('res-one', 'يجب إدخال قيمتين على الأقل للعينة.');
+    return;
+  }
+  const mu = parseFloat(document.getElementById('one-mu').value);
+  const alpha = parseFloat(document.getElementById('one-alpha').value);
+  const tails = parseInt(document.getElementById('one-tails').value);
+  const n = data.length;
+  const m = mean(data);
+  const s = sd(data);
+  const se = s / Math.sqrt(n);
+  const t = (m - mu) / se;
+  const df = n - 1;
+  const p = pValue(t, df, tails);
+  const tcrit = tCritical(alpha, df, tails);
+  const cohenD = Math.abs(m - mu) / s;
+  
+  const pDisplay = p < 0.0001 ? '< 0.0001' : fmt(p, 4);
+  
+  renderResult('res-one', {
+    t, p, df, alpha, cohenD,
+    formula: `t = (x̄ − μ₀) / (s/√n)\n= (${fmt(m,2)} − ${mu}) / (${fmt(s,3)}/√${n})\n= ${fmt(t,3)}`,
+    rows: [
+      ['متوسط العينة x̄', fmt(m,3)],
+      ['القيمة المرجعية μ₀', fmt(mu,3)],
+      ['الفرق (x̄ − μ₀)', fmt(m-mu,3)],
+      ['الانحراف المعياري s', fmt(s,3)],
+      ['الخطأ المعياري SE', fmt(se,4)],
+      ['قيمة t الحرجة', fmt(tcrit,3)],
+      ['حجم الأثر d (Cohen)', `${fmt(cohenD,3)} — ${cohenCategory(cohenD)}`],
+      ['حجم العينة n', n]
+    ],
+    assumptions: [
+      { ok: n >= 30, text: `حجم العينة ${n} — ${n >= 30 ? 'كافٍ بموجب نظرية النهاية المركزية' : 'يفضل التحقق من طبيعية البيانات (n<30)'}` },
+      { ok: true, text: 'المتغير من المستوى الفتري أو النسبي — مفترض' },
+      { ok: true, text: 'مشاهدات العينة مستقلة عن بعضها — مفترض' }
+    ],
+    interp: `أظهر اختبار T للعينة الواحدة ${p <= alpha ? 'وجود فرق دال إحصائياً' : 'عدم وجود فرق دال إحصائياً'} بين متوسط العينة (x̄ = ${fmt(m,2)}) والقيمة المرجعية (μ₀ = ${mu})، إذ بلغت قيمة الاختبار [t(${df}) = ${fmt(t,3)}, p = ${pDisplay}, d = ${fmt(cohenD,2)}].`
+  });
+}
+
+function calcInd() {
+  const d1=parseInput('ind-d1'), d2=parseInput('ind-d2');
+  if(d1.length<2 || d2.length<2) return showErr('res-ind','كل مجموعة تحتاج قيمتين على الأقل.');
+  const alpha=+document.getElementById('ind-alpha').value, tails=+document.getElementById('ind-tails').value;
+  const n1=d1.length, n2=d2.length, m1=mean(d1), m2=mean(d2), v1=variance(d1), v2=variance(d2);
+  const se=Math.sqrt(v1/n1 + v2/n2);
+  const t=(m1-m2)/se;
+  const dfNum=(v1/n1+v2/n2)**2, dfDen=(v1/n1)**2/(n1-1)+(v2/n2)**2/(n2-1);
+  const df=Math.floor(dfNum/dfDen);
+  const p=pValue(t,df,tails);
+  const tcrit=tCritical(alpha,df,tails);
+  const pooledSD=Math.sqrt(((n1-1)*v1+(n2-1)*v2)/(n1+n2-2));
+  const cohenD=Math.abs(m1-m2)/pooledSD;
+  const lev=leveneTest(d1,d2);
+  const pDisplay = p < 0.0001 ? '< 0.0001' : fmt(p, 4);
+  
+  renderResult('res-ind',{t,p,df,alpha,cohenD,
+    formula:`t = (x̄₁ − x̄₂) / √(s₁²/n₁ + s₂²/n₂)\n= (${fmt(m1,2)} - ${fmt(m2,2)}) / ${fmt(se,4)}\n= ${fmt(t,3)}`,
+    rows:[
+      ['متوسط المجموعة 1', fmt(m1,3)],
+      ['متوسط المجموعة 2', fmt(m2,3)],
+      ['الفرق المطلق', fmt(Math.abs(m1-m2),3)],
+      ['انحراف معياري s₁ / s₂', `${fmt(sd(d1),3)} / ${fmt(sd(d2),3)}`],
+      ['اختبار ليفين (تجانس)', `F = ${fmt(lev.F,3)}, p = ${fmt(lev.p,4)}`],
+      ['قيمة t الحرجة', fmt(tcrit,3)],
+      ['حجم الأثر Cohen\'s d', `${fmt(cohenD,3)} — ${cohenCategory(cohenD)}`],
+      ['حجم العينة n₁/n₂', `${n1} / ${n2}`]
+    ],
+    assumptions:[
+      {ok: n1>=30 && n2>=30, text:`حجم العينتين: n₁=${n1}, n₂=${n2} — ${(n1>=30 && n2>=30)?'كافٍ':'صغير، يُوصى بفحص التوزيع الطبيعي'}`},
+      {ok: lev.p > 0.05, text:`اختبار ليفين للتجانس: p = ${fmt(lev.p,4)} → ${lev.p>0.05?'التباينان متجانسان (افتراض تحقق)':'التباينان غير متجانسين، تم استخدام تصحيح Welch'}`},
+      {ok:true, text:'افتراض استقلالية المجموعتين مقبول'}
+    ],
+    interp:`أظهر اختبار T للعينات المستقلة ${p<=alpha?'وجود فرق دال إحصائياً':'عدم وجود فرق دال إحصائياً'} بين متوسط المجموعة الأولى (x̄₁ = ${fmt(m1,2)}) ومتوسط المجموعة الثانية (x̄₂ = ${fmt(m2,2)})، إذ بلغت قيمة الاختبار [t(${df}) = ${fmt(t,3)}, p = ${pDisplay}, d = ${fmt(cohenD,2)}].`
+  });
+}
+
+function calcPair() {
+  const pre=parseInput('pair-pre'), post=parseInput('pair-post');
+  if(pre.length<2) return showErr('res-pair','أدخل على الأقل قيمتَين في كل حقل');
+  if(pre.length!==post.length) return showErr('res-pair',`عدد قيم "قبل" (${pre.length}) لا يساوي عدد قيم "بعد" (${post.length}) — تحقق من البيانات`);
+  const alpha=+document.getElementById('pair-alpha').value, tails=+document.getElementById('pair-tails').value;
+  const diffs = pre.map((v,i)=>post[i]-v);
+  const n=diffs.length, md=mean(diffs), sdd=sd(diffs), se=sdd/Math.sqrt(n);
+  const t=md/se, df=n-1;
+  const p=pValue(t,df,tails);
+  const tcrit=tCritical(alpha,df,tails);
+  const cohenD = Math.abs(md)/sdd;
+  const pDisplay = p < 0.0001 ? '< 0.0001' : fmt(p, 4);
+  
+  renderResult('res-pair',{t,p,df,alpha,cohenD,
+    formula:`t = d̄ ÷ (s_d ÷ √n)\n= ${fmt(md,3)} ÷ (${fmt(sdd,3)} ÷ √${n})\n= ${fmt(t,3)}`,
+    rows:[
+      ['متوسط قيم ما قبل x̄pre', fmt(mean(pre),3)],
+      ['متوسط قيم ما بعد x̄post', fmt(mean(post),3)],
+      ['متوسط الفروق d̄', fmt(md,3)],
+      ['الانحراف المعياري للفروق s_d', fmt(sdd,3)],
+      ['الخطأ المعياري SE', fmt(se,4)],
+      ['قيمة t الحرجة', fmt(tcrit,3)],
+      ['حجم الأثر Cohen\'s d', `${fmt(cohenD,3)} — ${cohenCategory(cohenD)}`],
+      ['عدد الأزواج n', n]
+    ],
+    assumptions:[
+      {ok:n>=30, text:`عدد الأزواج ${n} — ${n>=30?'كافٍ':'صغير، يُنصح بالتحقق من أن الفروق تتبع التوزيع الطبيعي'}`},
+      {ok:true, text:'كل زوج من القياسَين ينتمي لنفس الفرد — مفترض'},
+      {ok:true, text:'الفروق بين الأفراد مستقلة عن بعضها — مفترض'}
+    ],
+    interp:`أظهر اختبار T للعينات المرتبطة ${p<=alpha?'وجود فرق دال إحصائياً':'عدم وجود فرق دال إحصائياً'} بين قياسَي ما قبل وما بعد (x̄pre = ${fmt(mean(pre),2)}، x̄post = ${fmt(mean(post),2)}، متوسط الفروق d̄ = ${fmt(md,2)})، إذ بلغت قيمة الاختبار [t(${df}) = ${fmt(t,3)}, p = ${pDisplay}, d = ${fmt(cohenD,2)}].`
+  });
+}
+function showErr(id, msg) { document.getElementById(id).innerHTML = `<div class="error-box">⚠️ ${msg}</div>`; }
+</script>
+</body>
+</html>
