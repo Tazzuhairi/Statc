@@ -97,10 +97,10 @@ body::before {
 }
 .header h1 {
   font-size: clamp(1.9em, 4.5vw, 3em);
-  font-weight: 900; color: #fff;
+  font-weight: 900; color: var(--accent);
   line-height: 1.2; margin-bottom: 12px;
 }
-.header h1 span { color: var(--accent2); }
+.header h1 span { color: var(--accent3); }
 .header p { color: var(--muted); font-size: 1em; max-width: 500px; margin: 0 auto; }
 
 /* ─── STEP CARDS ─── */
@@ -221,11 +221,11 @@ body::before {
 }
 .btn-success:hover { background: #059669; transform: translateY(-1px); }
 .btn-ghost {
-  background: rgba(255,255,255,0.04);
+  background: var(--surface2);
   border: 1px solid var(--border);
-  color: var(--muted);
+  color: var(--text2);
 }
-.btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+.btn-ghost:hover { color: var(--accent); border-color: var(--accent2); }
 
 /* file input hidden */
 #csvFile { display: none; }
@@ -313,7 +313,7 @@ tbody td:first-child {
 .result-panel.show { display: block; }
 
 .result-header {
-  background: linear-gradient(135deg, var(--card2), var(--card));
+  background: linear-gradient(135deg, #edf4fc, #f5f9fe);
   padding: 24px 30px 20px;
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; gap: 16px;
@@ -323,7 +323,7 @@ tbody td:first-child {
   position: relative;
 }
 .alpha-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-.alpha-ring .bg-circle { fill: none; stroke: rgba(255,255,255,0.07); stroke-width: 6; }
+.alpha-ring .bg-circle { fill: none; stroke: var(--border2); stroke-width: 6; }
 .alpha-ring .val-circle {
   fill: none; stroke-width: 6;
   stroke-linecap: round;
@@ -337,7 +337,7 @@ tbody td:first-child {
   align-items: center; justify-content: center;
 }
 .alpha-ring .alpha-num {
-  font-size: 1.3em; font-weight: 900; color: #fff; line-height: 1;
+  font-size: 1.3em; font-weight: 900; color: var(--accent); line-height: 1;
 }
 .alpha-ring .alpha-lbl {
   font-size: .55em; color: var(--muted); margin-top: 2px;
@@ -349,7 +349,7 @@ tbody td:first-child {
   letter-spacing: 2px; margin-bottom: 4px;
 }
 .result-verdict {
-  font-size: 1.5em; font-weight: 900; color: #fff;
+  font-size: 1.5em; font-weight: 900; color: var(--text);
 }
 .result-desc { font-size: .88em; color: var(--muted); margin-top: 4px; line-height: 1.5; }
 
@@ -486,7 +486,7 @@ tbody td:first-child {
 .srp-sec:last-child { border-bottom: none; }
 
 .srp-heading {
-  font-size: 1em; font-weight: 700; color: #fff;
+  font-size: 1em; font-weight: 700; color: var(--text);
   margin-bottom: 12px;
 }
 
