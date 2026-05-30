@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>منصة التحليل الإحصائي</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -61,7 +61,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Cairo', sans-serif;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -123,8 +123,7 @@ header {
 }
 
 header h1 {
-  font-size: clamp(28px, 5vw, 46px);
-  font-weight: 900;
+  font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -264,7 +263,7 @@ table {
 }
 
 thead th {
-  background: var(--surface2);
+  background: #eaf0f8;
   padding: 12px 16px;
   font-size: 13px;
   font-weight: 600;
@@ -283,9 +282,10 @@ tbody tr {
   transition: background .2s;
   animation: rowIn .3s ease both;
 }
+tbody tr:nth-child(even) { background: rgba(26,95,160,0.03); }
 
-tbody tr:hover { background: rgba(255,255,255,0.03); }
-tbody tr:not(:last-child) td { border-bottom: 1px solid rgba(255,255,255,0.04); }
+tbody tr:hover { background: rgba(26,95,160,0.05); }
+tbody tr:not(:last-child) td { border-bottom: 1px solid var(--border); }
 
 td {
   padding: 4px 8px;
@@ -296,7 +296,7 @@ td {
 .row-num {
   color: var(--muted);
   font-size: 12px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   width: 40px;
 }
 
@@ -305,7 +305,7 @@ td {
   border: none;
   color: var(--text);
   text-align: center;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   font-size: 14px;
   width: 100%;
   padding: 8px 4px;
@@ -315,7 +315,8 @@ td {
 }
 
 .cell-input:focus {
-  background: rgba(26,95,160,0.05);
+  background: rgba(26,95,160,0.08);
+  outline: 1px solid var(--border2);
 }
 
 .delete-btn {
@@ -331,7 +332,7 @@ td {
 }
 
 tbody tr:hover .delete-btn { opacity: 1; }
-.delete-btn:hover { background: rgba(239,68,68,0.15); color: var(--danger); }
+.delete-btn:hover { background: rgba(176,28,28,0.10); color: var(--danger); }
 
 /* ───── Buttons ───── */
 .btn-row {
@@ -349,7 +350,7 @@ tbody tr:hover .delete-btn { opacity: 1; }
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  font-family: 'Cairo', sans-serif;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   font-size: 14px;
   font-weight: 600;
   transition: all .25s;
@@ -400,7 +401,7 @@ tbody tr:hover .delete-btn { opacity: 1; }
 }
 
 .stat-chip span {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   color: var(--text);
   font-weight: 600;
 }
@@ -475,7 +476,7 @@ tbody tr:hover .delete-btn { opacity: 1; }
 .result-value {
   font-size: 52px;
   font-weight: 900;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   line-height: 1;
   background: linear-gradient(135deg, var(--accent), var(--accent3));
   -webkit-background-clip: text;
@@ -552,7 +553,7 @@ tbody tr:hover .delete-btn { opacity: 1; }
   justify-content: space-between;
   font-size: 11px;
   color: var(--muted);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
 }
 
 /* ───── Interpretation table ───── */
@@ -578,7 +579,7 @@ tbody tr:hover .delete-btn { opacity: 1; }
 }
 
 .interp-row .range {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   font-size: 13px;
   color: var(--accent2);
   margin-bottom: 4px;
@@ -736,7 +737,7 @@ canvas {
 .cmp-card .cmp-val {
   font-size: 36px;
   font-weight: 900;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   margin: 8px 0;
 }
 
@@ -763,7 +764,7 @@ canvas {
 .rc-controls { display: flex; align-items: center; gap: 6px; }
 .rc-step { width: 36px; height: 36px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 13px; font-weight: 700; cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center; }
 .rc-step:hover { background: var(--accent); border-color: var(--accent); color: white; transform: scale(1.05); }
-.rc-input { width: 68px; height: 36px; background: var(--surface); border: 1px solid var(--accent); border-radius: 8px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; text-align: center; outline: none; transition: box-shadow .2s; padding: 0 4px; }
+.rc-input { width: 68px; height: 36px; background: var(--surface); border: 1px solid var(--accent); border-radius: 8px; color: var(--text); font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif; font-size: 15px; font-weight: 700; text-align: center; outline: none; transition: box-shadow .2s; padding: 0 4px; }
 .rc-input:focus { box-shadow: 0 0 0 3px rgba(59,130,246,0.25); }
 .rc-input::-webkit-outer-spin-button, .rc-input::-webkit-inner-spin-button { -webkit-appearance: none; }
 .rc-input[type=number] { -moz-appearance: textfield; }
@@ -837,7 +838,7 @@ html::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 }
 
 .formula-main {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   font-size: 17px;
   color: var(--text);
   line-height: 2;
@@ -872,7 +873,7 @@ html::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 .steps-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   font-size: 13px;
 }
 
@@ -923,14 +924,14 @@ html::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 .m-chip .mc-label {
   font-size: 11px;
   color: var(--muted);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   margin-bottom: 4px;
 }
 
 .m-chip .mc-val {
   font-size: 18px;
   font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   color: var(--accent2);
 }
 
@@ -945,14 +946,14 @@ html::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
 .final-result-box .fr-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
 .final-result-box .fr-eq {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   font-size: 22px;
   font-weight: 700;
   color: var(--text);
   margin-bottom: 8px;
 }
 .final-result-box .fr-val {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
   font-size: 40px;
   font-weight: 900;
   background: linear-gradient(135deg, var(--accent), var(--accent3));
@@ -1017,7 +1018,7 @@ html::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 .footer-year {
   font-size: 12px;
   color: var(--muted);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
 }
 
 .footer-line {

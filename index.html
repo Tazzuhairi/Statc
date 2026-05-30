@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>المعالجات الإحصائية في دراسات علم المعلومات</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
   --bg: #f5f7fb;
@@ -60,7 +60,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Tajawal', sans-serif;
+      font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
@@ -136,9 +136,8 @@
     }
 
     .header h1 {
-      font-size: clamp(1.7em, 4.5vw, 2.8em);
-      font-weight: 900;
-      color: #fff;
+      font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900;
+      color: var(--accent);
       line-height: 1.25;
       margin-bottom: 12px;
     }
@@ -301,7 +300,7 @@
       position: fixed; inset: 0; z-index: 9999;
       background: linear-gradient(135deg, #edf2f7 0%, #f5f7fb 50%, #eef3f8 100%);
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Tajawal', sans-serif; direction: rtl;
+      font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif; direction: rtl;
     }
     #loginOverlay::before {
       content: ''; position: absolute; inset: 0;
@@ -335,7 +334,7 @@
       box-shadow: 0 6px 24px rgba(59,130,246,0.3);
       border: 1px solid rgba(59,130,246,0.3);
     }
-    .login-title { font-size: 19px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+    .login-title { font-size: 19px; font-weight: 900; color: var(--accent); margin-bottom: 4px; }
     .login-sub   { font-size: 13px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
 
     .login-tabs {
@@ -346,7 +345,7 @@
     .login-tab {
       flex: 1; padding: 10px; border: none;
       background: rgba(255,255,255,0.03); color: var(--muted);
-      cursor: pointer; font-family: 'Tajawal',sans-serif;
+      cursor: pointer; font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
       font-size: 14px; font-weight: 700; transition: all 0.25s;
     }
     .login-tab:first-child { border-left: 1px solid rgba(99,179,255,0.12); }
@@ -359,7 +358,7 @@
       width: 100%; padding: 13px 16px; margin-bottom: 14px;
       background: var(--surface2); border: 1px solid var(--border);
       border-radius: 10px; color: var(--text);
-      font-family: 'Tajawal',sans-serif; font-size: 14px;
+      font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif; font-size: 14px;
       box-sizing: border-box; outline: none; text-align: right; transition: border 0.2s;
     }
     .login-input:focus { border-color: #3b82f6; background: rgba(26,95,160,0.05); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
@@ -368,7 +367,7 @@
     .login-btn {
       width: 100%; padding: 14px; border: none; border-radius: 10px;
       background: linear-gradient(135deg, var(--primary-dark), var(--accent));
-      color: #fff; font-family: 'Tajawal',sans-serif;
+      color: #fff; font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
       font-size: 16px; font-weight: 900; cursor: pointer;
       transition: all 0.25s; margin-top: 4px;
       box-shadow: 0 4px 18px rgba(59,130,246,0.35);
@@ -391,7 +390,7 @@
       padding: 7px 14px; border-radius: 20px;
       border: 1px solid rgba(59,130,246,0.3);
       background: rgba(26,95,160,0.05); color: #60a5fa;
-      cursor: pointer; font-family: 'Tajawal',sans-serif;
+      cursor: pointer; font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
       font-size: 13px; font-weight: 700; transition: all 0.2s;
     }
     .logout-btn:hover { background: rgba(26,95,160,0.05); color: #fff; }
