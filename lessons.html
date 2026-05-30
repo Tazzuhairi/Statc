@@ -7,18 +7,55 @@
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:      #080e1a;
-      --surface: #0e1729;
-      --card:    #111f35;
-      --border:  rgba(99,179,255,0.12);
-      --accent:  #3b82f6;
-      --accent2: #60a5fa;
-      --accent3: #8b5cf6;
-      --gold:    #f59e0b;
-      --text:    #e2eaf5;
-      --muted:   #64748b;
-      --radius:  16px;
-    }
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface2: #f8fafc;
+  --card: #ffffff;
+  --card2: #f0f4f8;
+  --border: rgba(26,95,160,0.15);
+  --border2: #c8d8e8;
+  --text: #0f1f2e;
+  --text2: #3d5a78;
+  --text3: #7a96b0;
+  --accent: #1a5fa0;
+  --accent2: #2874b8;
+  --accent3: #6344a8;
+  --success: #1a7a56;
+  --success-color: #1a7a56;
+  --warning: #b05a10;
+  --danger: #b01c1c;
+  --error-color: #b01c1c;
+  --gold: #9a7000;
+  --glow: rgba(26,95,160,0.10);
+  --muted: #6b87a2;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow-sm: 0 2px 8px rgba(15,31,46,0.06);
+  --shadow-md: 0 6px 20px rgba(15,31,46,0.08);
+  --shadow-lg: 0 10px 30px rgba(15,31,46,0.07);
+  --pearson-color: #1a5fa0;
+  --spearman-color: #6344a8;
+  --primary-color: #1a5fa0;
+  --primary-dark: #124480;
+  --secondary-color: #2874b8;
+  --bg-light: #edf2f7;
+  --bg-white: #ffffff;
+  --text-dark: #0f1f2e;
+  --border-color: #b8d0e8;
+  --blue: #1a5fa0;
+  --blue-dark: #124480;
+  --blue-bg: #edf4fc;
+  --blue-border: #b8d4f0;
+  --green: #1a7a56;
+  --green-bg: #edf6f0;
+  --green-border: #b0d8c4;
+  --amber: #b05a10;
+  --amber-bg: #fef6ea;
+  --amber-border: #f0d0a8;
+  --red: #b01c1c;
+  --red-bg: #fef0f0;
+  --red-border: #f0b8b8;
+}
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -35,8 +72,7 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse 70% 50% at 15% 5%,  rgba(59,130,246,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 85% 85%, rgba(139,92,246,0.07) 0%, transparent 60%);
+        linear-gradient(135deg, rgba(26,95,160,0.04) 0%, rgba(99,69,168,0.03) 100%);
       pointer-events: none;
       z-index: 0;
     }
@@ -45,8 +81,8 @@
       position: fixed;
       inset: 0;
       background-image:
-        linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+        linear-gradient(rgba(26,95,160,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,95,160,0.05) 1px, transparent 1px);
       background-size: 40px 40px;
       pointer-events: none;
       z-index: 0;
@@ -65,14 +101,14 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      color: var(--muted);
+      color: var(--text2);
       text-decoration: none;
       font-size: .85em;
       font-weight: 600;
       margin-bottom: 36px;
       transition: color .2s;
     }
-    .back-link:hover { color: var(--accent2); }
+    .back-link:hover { color: var(--accent); }
     .back-link svg { width:16px; height:16px; transform: scaleX(-1); }
 
     /* ─── HEADER ─── */
@@ -86,9 +122,9 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(245,158,11,0.1);
-      border: 1px solid rgba(245,158,11,0.3);
-      color: #fbbf24;
+      background: rgba(154,112,0,0.08);
+      border: 1px solid rgba(154,112,0,0.2);
+      color: var(--gold);
       font-size: .78em;
       font-weight: 700;
       letter-spacing: 2px;
@@ -199,7 +235,7 @@
     .lesson-title {
       font-size: 1.05em;
       font-weight: 700;
-      color: #fff;
+      color: var(--text);
       margin-bottom: 5px;
       line-height: 1.4;
     }
@@ -247,7 +283,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.82);
+      background: rgba(15,31,46,0.7);
       z-index: 999;
       display: none;
       align-items: center;
@@ -280,7 +316,7 @@
     .modal-title {
       font-size: 1em;
       font-weight: 700;
-      color: #fff;
+      color: var(--text);
       display: flex;
       align-items: center;
       gap: 10px;
@@ -291,9 +327,9 @@
     .modal-close {
       width: 34px; height: 34px;
       border-radius: 8px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text2);
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.2em;

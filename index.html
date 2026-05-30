@@ -7,21 +7,55 @@
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:       #080e1a;
-      --surface:  #0e1729;
-      --card:     #111f35;
-      --card2:    #162540;
-      --border:   rgba(99,179,255,0.12);
-      --accent:   #3b82f6;
-      --accent2:  #60a5fa;
-      --accent3:  #8b5cf6;
-      --success:  #10b981;
-      --gold:     #f59e0b;
-      --glow:     rgba(59,130,246,0.25);
-      --text:     #e2eaf5;
-      --muted:    #64748b;
-      --radius:   16px;
-    }
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface2: #f8fafc;
+  --card: #ffffff;
+  --card2: #f0f4f8;
+  --border: rgba(26,95,160,0.15);
+  --border2: #c8d8e8;
+  --text: #0f1f2e;
+  --text2: #3d5a78;
+  --text3: #7a96b0;
+  --accent: #1a5fa0;
+  --accent2: #2874b8;
+  --accent3: #6344a8;
+  --success: #1a7a56;
+  --success-color: #1a7a56;
+  --warning: #b05a10;
+  --danger: #b01c1c;
+  --error-color: #b01c1c;
+  --gold: #9a7000;
+  --glow: rgba(26,95,160,0.10);
+  --muted: #6b87a2;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow-sm: 0 2px 8px rgba(15,31,46,0.06);
+  --shadow-md: 0 6px 20px rgba(15,31,46,0.08);
+  --shadow-lg: 0 10px 30px rgba(15,31,46,0.07);
+  --pearson-color: #1a5fa0;
+  --spearman-color: #6344a8;
+  --primary-color: #1a5fa0;
+  --primary-dark: #124480;
+  --secondary-color: #2874b8;
+  --bg-light: #edf2f7;
+  --bg-white: #ffffff;
+  --text-dark: #0f1f2e;
+  --border-color: #b8d0e8;
+  --blue: #1a5fa0;
+  --blue-dark: #124480;
+  --blue-bg: #edf4fc;
+  --blue-border: #b8d4f0;
+  --green: #1a7a56;
+  --green-bg: #edf6f0;
+  --green-border: #b0d8c4;
+  --amber: #b05a10;
+  --amber-bg: #fef6ea;
+  --amber-border: #f0d0a8;
+  --red: #b01c1c;
+  --red-bg: #fef0f0;
+  --red-border: #f0b8b8;
+}
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -43,9 +77,7 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse 70% 50% at 15% 5%,  rgba(59,130,246,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 85% 85%, rgba(139,92,246,0.07) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(16,185,129,0.04) 0%, transparent 60%);
+        linear-gradient(135deg, rgba(26,95,160,0.04) 0%, rgba(99,69,168,0.03) 100%);
       pointer-events: none;
       z-index: 0;
     }
@@ -54,8 +86,8 @@
       position: fixed;
       inset: 0;
       background-image:
-        linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+        linear-gradient(rgba(26,95,160,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,95,160,0.05) 1px, transparent 1px);
       background-size: 40px 40px;
       pointer-events: none;
       z-index: 0;
@@ -84,7 +116,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(59,130,246,0.1);
+      background: rgba(26,95,160,0.05);
       border: 1px solid rgba(59,130,246,0.3);
       color: var(--accent2);
       font-size: .78em;
@@ -99,7 +131,7 @@
       width: 7px; height: 7px;
       background: var(--accent);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--accent);
+      box-shadow: 0 0 6px rgba(26,95,160,0.4);
       animation: pulse 2s ease-in-out infinite;
     }
 
@@ -212,7 +244,7 @@
     .card-body h2 {
       font-size: 1.05em;
       font-weight: 700;
-      color: #fff;
+      color: var(--text);
       margin-bottom: 6px;
     }
 
@@ -263,9 +295,134 @@
       0%,100% { opacity: 1; box-shadow: 0 0 8px var(--accent); }
       50%      { opacity: .5; box-shadow: 0 0 4px var(--accent); }
     }
+
+    /* ─── LOGIN OVERLAY ─── */
+    #loginOverlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(135deg, #edf2f7 0%, #f5f7fb 50%, #eef3f8 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Tajawal', sans-serif; direction: rtl;
+    }
+    #loginOverlay::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(59,130,246,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 80% 70%, rgba(139,92,246,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    #loginOverlay.hidden { display: none; }
+
+    .login-box {
+      position: relative; z-index: 1;
+      background: var(--surface);
+      border: 1px solid rgba(99,179,255,0.15);
+      border-radius: 20px;
+      padding: 44px 40px;
+      width: 100%; max-width: 420px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 40px rgba(59,130,246,0.08);
+      text-align: center;
+    }
+    .login-box::before {
+      content: ''; position: absolute; top: 0; right: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6);
+      border-radius: 20px 20px 0 0;
+    }
+    .login-logo {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-dark), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; margin: 0 auto 18px;
+      box-shadow: 0 6px 24px rgba(59,130,246,0.3);
+      border: 1px solid rgba(59,130,246,0.3);
+    }
+    .login-title { font-size: 19px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+    .login-sub   { font-size: 13px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+
+    .login-tabs {
+      display: flex; margin-bottom: 24px;
+      border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .login-tab {
+      flex: 1; padding: 10px; border: none;
+      background: rgba(255,255,255,0.03); color: var(--muted);
+      cursor: pointer; font-family: 'Tajawal',sans-serif;
+      font-size: 14px; font-weight: 700; transition: all 0.25s;
+    }
+    .login-tab:first-child { border-left: 1px solid rgba(99,179,255,0.12); }
+    .login-tab.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #60a5fa;
+    }
+
+    .login-input {
+      width: 100%; padding: 13px 16px; margin-bottom: 14px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text);
+      font-family: 'Tajawal',sans-serif; font-size: 14px;
+      box-sizing: border-box; outline: none; text-align: right; transition: border 0.2s;
+    }
+    .login-input:focus { border-color: #3b82f6; background: rgba(26,95,160,0.05); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+    .login-input::placeholder { color: var(--text3); }
+
+    .login-btn {
+      width: 100%; padding: 14px; border: none; border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--accent));
+      color: #fff; font-family: 'Tajawal',sans-serif;
+      font-size: 16px; font-weight: 900; cursor: pointer;
+      transition: all 0.25s; margin-top: 4px;
+      box-shadow: 0 4px 18px rgba(59,130,246,0.35);
+    }
+    .login-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(59,130,246,0.5); }
+    .login-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .login-error   { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #fca5a5; margin-top: 12px; display: none; }
+    .login-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #6ee7b7; margin-top: 12px; display: none; }
+
+    /* زر الخروج */
+    .logout-wrap {
+      position: fixed; top: 16px; left: 16px; z-index: 100;
+      display: none; flex-direction: column; align-items: flex-start; gap: 4px;
+    }
+    .logout-wrap.visible { display: flex; }
+    .user-badge-top { font-size: 11px; color: var(--muted); padding-right: 4px; }
+    .logout-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 20px;
+      border: 1px solid rgba(59,130,246,0.3);
+      background: rgba(26,95,160,0.05); color: #60a5fa;
+      cursor: pointer; font-family: 'Tajawal',sans-serif;
+      font-size: 13px; font-weight: 700; transition: all 0.2s;
+    }
+    .logout-btn:hover { background: rgba(26,95,160,0.05); color: #fff; }
   </style>
 </head>
 <body>
+
+  <!-- ====== شاشة تسجيل الدخول ====== -->
+  <div id="loginOverlay">
+    <div class="login-box">
+      <div class="login-logo">📊</div>
+      <div class="login-title">المعالجات الإحصائية</div>
+      <div class="login-sub">في دراسات علم المعلومات<br>تصميم: طلال ناظم الزهيري</div>
+      <div class="login-tabs">
+        <button class="login-tab active" onclick="switchTab('login')">تسجيل الدخول</button>
+        <button class="login-tab"        onclick="switchTab('register')">حساب جديد</button>
+      </div>
+      <input class="login-input" type="email"    id="authEmail"    placeholder="البريد الإلكتروني" />
+      <input class="login-input" type="password" id="authPassword" placeholder="كلمة المرور (6 أحرف على الأقل)" />
+      <button class="login-btn" id="authBtn" onclick="handleAuth()">دخول</button>
+      <div class="login-error"   id="authError"></div>
+      <div class="login-success" id="authSuccess"></div>
+    </div>
+  </div>
+
+  <!-- زر تسجيل الخروج -->
+  <div class="logout-wrap" id="logoutWrap">
+    <span class="user-badge-top" id="userBadgeTop"></span>
+    <button class="logout-btn" onclick="handleLogout()">🚪 تسجيل الخروج</button>
+  </div>
+
   <div class="bg-grid"></div>
 
   <div class="wrap">
@@ -369,5 +526,106 @@
     </footer>
 
   </div>
+
+  <!-- ====== Firebase Authentication ====== -->
+  <script type="module">
+    import { initializeApp }                           from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword,
+             createUserWithEmailAndPassword,
+             onAuthStateChanged, signOut }             from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey:            "AIzaSyC4Vx34mPN1X2bD-2dY1oKPayEwmg7H4ls",
+      authDomain:        "talalstc.firebaseapp.com",
+      projectId:         "talalstc",
+      storageBucket:     "talalstc.firebasestorage.app",
+      messagingSenderId: "977929813229",
+      appId:             "1:977929813229:web:8c2e059becd2ace059e0e4",
+      measurementId:     "G-QVY6KTSS9H"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // حالة المستخدم
+    onAuthStateChanged(auth, (user) => {
+      const overlay    = document.getElementById('loginOverlay');
+      const logoutWrap = document.getElementById('logoutWrap');
+      const userBadge  = document.getElementById('userBadgeTop');
+      if (user) {
+        overlay.classList.add('hidden');
+        logoutWrap.classList.add('visible');
+        userBadge.textContent = '👤 ' + user.email;
+      } else {
+        overlay.classList.remove('hidden');
+        logoutWrap.classList.remove('visible');
+        userBadge.textContent = '';
+      }
+    });
+
+    // تبديل التبويب
+    let currentTab = 'login';
+    window.switchTab = (tab) => {
+      currentTab = tab;
+      document.querySelectorAll('.login-tab').forEach((t, i) => {
+        t.classList.toggle('active', (tab==='login' && i===0)||(tab==='register' && i===1));
+      });
+      document.getElementById('authBtn').textContent = tab === 'login' ? 'دخول' : 'إنشاء حساب';
+      document.getElementById('authError').style.display   = 'none';
+      document.getElementById('authSuccess').style.display = 'none';
+    };
+
+    // تسجيل الدخول / إنشاء حساب
+    window.handleAuth = async () => {
+      const email    = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+      const btn      = document.getElementById('authBtn');
+      const errDiv   = document.getElementById('authError');
+      const sucDiv   = document.getElementById('authSuccess');
+
+      errDiv.style.display = sucDiv.style.display = 'none';
+
+      if (!email || !password) {
+        errDiv.textContent   = '⚠️ الرجاء إدخال البريد وكلمة المرور.';
+        errDiv.style.display = 'block'; return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '⏳ جارٍ التحميل...';
+
+      try {
+        if (currentTab === 'login') {
+          await signInWithEmailAndPassword(auth, email, password);
+        } else {
+          await createUserWithEmailAndPassword(auth, email, password);
+          sucDiv.textContent   = '✅ تم إنشاء الحساب بنجاح!';
+          sucDiv.style.display = 'block';
+        }
+      } catch (error) {
+        const msgs = {
+          'auth/user-not-found':      '❌ البريد الإلكتروني غير مسجل.',
+          'auth/wrong-password':      '❌ كلمة المرور غير صحيحة.',
+          'auth/email-already-in-use':'❌ البريد مستخدم مسبقاً.',
+          'auth/weak-password':       '❌ كلمة المرور ضعيفة (6 أحرف على الأقل).',
+          'auth/invalid-email':       '❌ صيغة البريد غير صحيحة.',
+          'auth/invalid-credential':  '❌ البريد أو كلمة المرور غير صحيحة.',
+        };
+        errDiv.textContent   = msgs[error.code] || ('❌ ' + error.message);
+        errDiv.style.display = 'block';
+      } finally {
+        btn.disabled    = false;
+        btn.textContent = currentTab === 'login' ? 'دخول' : 'إنشاء حساب';
+      }
+    };
+
+    // تسجيل الخروج
+    window.handleLogout = () => signOut(auth);
+
+    // Enter للدخول
+    document.getElementById('authPassword').addEventListener('keydown', e => {
+      if (e.key === 'Enter') window.handleAuth();
+    });
+  </script>
+
 </body>
 </html>
