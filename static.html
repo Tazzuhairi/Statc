@@ -1,63 +1,27 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>اداة المعالجة الاحصائية المتقدمة</title>
   <style>
-    
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
     
     :root {
-  --bg: #f5f7fb;
-  --surface: #ffffff;
-  --surface2: #f8fafc;
-  --card: #ffffff;
-  --card2: #f0f4f8;
-  --border: rgba(26,95,160,0.15);
-  --border2: #c8d8e8;
-  --text: #0f1f2e;
-  --text2: #3d5a78;
-  --text3: #7a96b0;
-  --accent: #1a5fa0;
-  --accent2: #2874b8;
-  --accent3: #6344a8;
-  --success: #1a7a56;
-  --success-color: #1a7a56;
-  --warning: #b05a10;
-  --danger: #b01c1c;
-  --error-color: #b01c1c;
-  --gold: #9a7000;
-  --glow: rgba(26,95,160,0.10);
-  --muted: #6b87a2;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow-sm: 0 2px 8px rgba(15,31,46,0.06);
-  --shadow-md: 0 6px 20px rgba(15,31,46,0.08);
-  --shadow-lg: 0 10px 30px rgba(15,31,46,0.07);
-  --pearson-color: #1a5fa0;
-  --spearman-color: #6344a8;
-  --primary-color: #1a5fa0;
-  --primary-dark: #124480;
-  --secondary-color: #2874b8;
-  --bg-light: #edf2f7;
-  --bg-white: #ffffff;
-  --text-dark: #0f1f2e;
-  --border-color: #b8d0e8;
-  --blue: #1a5fa0;
-  --blue-dark: #124480;
-  --blue-bg: #edf4fc;
-  --blue-border: #b8d4f0;
-  --green: #1a7a56;
-  --green-bg: #edf6f0;
-  --green-border: #b0d8c4;
-  --amber: #b05a10;
-  --amber-bg: #fef6ea;
-  --amber-border: #f0d0a8;
-  --red: #b01c1c;
-  --red-bg: #fef0f0;
-  --red-border: #f0b8b8;
-}
+      --primary-color: #2874a6;
+      --primary-dark: #1a5276;
+      --secondary-color: #2980b9;
+      --success-color: #16a085;
+      --error-color: #c0392b;
+      --warning-color: #f39c12;
+      --bg-light: #e9f0f7;
+      --bg-white: #fefefe;
+      --text-dark: #2c3e50;
+      --border-color: #aed6f1;
+      --shadow-sm: 0 4px 8px rgba(41, 128, 185, 0.2);
+      --shadow-md: 0 6px 12px rgba(41, 128, 185, 0.25);
+      --shadow-lg: 0 8px 15px rgba(0, 0, 0, 0.07);
+    }
     
     * {
       box-sizing: border-box;
@@ -66,7 +30,7 @@
     }
     
     body {
-      font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+      font-family: 'Cairo', Tahoma, sans-serif;
       background-color: var(--bg-light);
       padding: 25px;
       max-width: 1400px;
@@ -119,7 +83,7 @@
     input, select {
       padding: 12px 15px;
       font-size: 16px;
-      font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+      font-family: 'Cairo', Tahoma, sans-serif;
       width: 100%;
       border: 2px solid var(--secondary-color);
       border-radius: 8px;
@@ -162,7 +126,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+      font-family: 'Cairo', Tahoma, sans-serif;
     }
     
     button:hover:not(:disabled) {
@@ -631,10 +595,21 @@
     <div class="grid-2">
       <div class="form-group">
         <label for="sampleSize">
-          📊 حجم العينة:
-          <span class="tooltip" data-tooltip="إجمالي عدد المشاركين في الاستبيان">ℹ️</span>
+          📊 العدد:
+          <span class="tooltip" data-tooltip="عدد البيانات/المشاركين في الاستبيان">ℹ️</span>
         </label>
         <input type="number" id="sampleSize" placeholder="مثال: 100" min="1" />
+      </div>
+
+      <div class="form-group">
+        <label for="dataType">
+          📐 طبيعة البيانات:
+          <span class="tooltip" data-tooltip="اختر عينة إذا كانت البيانات مأخوذة من مجتمع أكبر، أو مجتمع كامل إذا كانت تشمل جميع أفراد المجتمع">ℹ️</span>
+        </label>
+        <select id="dataType">
+          <option value="sample" selected>عينة من مجتمع (n-1)</option>
+          <option value="population">مجتمع كامل (N)</option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -771,6 +746,7 @@
     
     const elements = {
       sampleSize: document.getElementById('sampleSize'),
+      dataType: document.getElementById('dataType'),
       scaleType: document.getElementById('scaleType'),
       questionNumber: document.getElementById('questionNumber'),
       weightInputsContainer: document.getElementById('weightInputsContainer'),
@@ -858,7 +834,7 @@
         elements.questionsCount.innerHTML = `
           <span class="badge badge-primary">عدد الأسئلة: ${count}</span>
           ${fixedWeights ? `<span class="badge badge-primary">نوع المقياس: ${elements.scaleType.value} نقاط</span>` : ''}
-          ${fixedWeights ? `<span class="badge badge-primary">حجم العينة: ${elements.sampleSize.value}</span>` : ''}
+          ${fixedWeights ? `<span class="badge badge-primary">العدد: ${elements.sampleSize.value}</span>` : ''}
         `;
       } else {
         elements.questionsCount.innerHTML = '';
@@ -874,6 +850,7 @@
           questionsData,
           fixedWeights,
           sampleSize: elements.sampleSize.value,
+          dataType: elements.dataType ? elements.dataType.value : 'sample',
           scaleType: elements.scaleType.value,
           questionNumber: elements.questionNumber.value,
           timestamp: new Date().toISOString()
@@ -905,6 +882,7 @@
           fixedWeights = data.fixedWeights;
           
           elements.sampleSize.value = data.sampleSize || '';
+          if (elements.dataType) elements.dataType.value = data.dataType || 'sample';
           elements.scaleType.value = data.scaleType || '';
           elements.questionNumber.value = data.questionNumber || '';
           
@@ -937,8 +915,9 @@
     /**
      * حساب المؤشرات الإحصائية
      */
-    function calculateStatistics(counts, weights) {
+    function calculateStatistics(counts, weights, dataType = null) {
       const total = counts.reduce((sum, count) => sum + count, 0);
+      const selectedDataType = dataType || (elements.dataType ? elements.dataType.value : 'sample');
       
       if (total === 0) {
         return { mean: 0, std: 0, variance: 0, cv: 0, median: 0 };
@@ -953,7 +932,10 @@
       for (let i = 0; i < counts.length; i++) {
         variance += counts[i] * Math.pow(weights[i] - mean, 2);
       }
-      variance = variance / total;
+      // العينة: استخدام (n-1) لتقدير تباين المجتمع دون تحيز.
+      // المجتمع الكامل: استخدام N لأن البيانات تشمل جميع أفراد المجتمع.
+      const denominator = selectedDataType === 'population' ? total : (total > 1 ? total - 1 : total);
+      variance = variance / denominator;
       const std = Math.sqrt(variance);
       
       // حساب معامل الاختلاف
@@ -1707,12 +1689,11 @@
   const htmlContent = `
   <html>
   <head>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <title>نتائج المعالجة الإحصائية</title>
     <style>
   body { 
-    font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif; 
+    font-family: 'Arial', Simplified Arabic; 
     direction: rtl; 
     text-align: center;   /* يجعل العنوان أيضاً في المنتصف */
   }
