@@ -737,6 +737,7 @@
     // ============================================
     
     let fixedWeights = null;
+    let fixedDataType = null;
     let questionsData = [];
     let editingIndex = -1;
     
@@ -831,10 +832,12 @@
     function updateQuestionsCount() {
       const count = questionsData.length;
       if (count > 0) {
+        const dataTypeLabel = fixedDataType === 'population' ? 'مجتمع كامل (N)' : 'عينة (n-1)';
         elements.questionsCount.innerHTML = `
           <span class="badge badge-primary">عدد الأسئلة: ${count}</span>
           ${fixedWeights ? `<span class="badge badge-primary">نوع المقياس: ${elements.scaleType.value} نقاط</span>` : ''}
           ${fixedWeights ? `<span class="badge badge-primary">العدد: ${elements.sampleSize.value}</span>` : ''}
+          ${fixedWeights ? `<span class="badge badge-primary">طبيعة البيانات: ${dataTypeLabel}</span>` : ''}
         `;
       } else {
         elements.questionsCount.innerHTML = '';
@@ -849,6 +852,7 @@
         const data = {
           questionsData,
           fixedWeights,
+          fixedDataType,
           sampleSize: elements.sampleSize.value,
           dataType: elements.dataType ? elements.dataType.value : 'sample',
           scaleType: elements.scaleType.value,
@@ -880,6 +884,7 @@
         if (confirm('هل تريد استرجاع البيانات المحفوظة؟ سيتم مسح البيانات الحالية.')) {
           questionsData = data.questionsData || [];
           fixedWeights = data.fixedWeights;
+          fixedDataType = data.fixedDataType || (data.fixedWeights ? (data.dataType || 'sample') : null);
           
           elements.sampleSize.value = data.sampleSize || '';
           if (elements.dataType) elements.dataType.value = data.dataType || 'sample';
@@ -889,6 +894,7 @@
           if (fixedWeights) {
             elements.sampleSize.disabled = true;
             elements.scaleType.disabled = true;
+            if (elements.dataType) elements.dataType.disabled = true;
           }
           
           // إعادة إنشاء واجهة الإدخال
@@ -973,7 +979,7 @@
         });
       });
       
-      return calculateStatistics(combinedCounts, fixedWeights);
+      return calculateStatistics(combinedCounts, fixedWeights, fixedDataType);
     }
 
     // ============================================
@@ -1473,16 +1479,20 @@
           return;
         }
         
+        // تثبيت طبيعة البيانات (عينة/مجتمع كامل) مع الأوزان
+        fixedDataType = elements.dataType ? elements.dataType.value : 'sample';
+        
         // تعطيل الحقول
         Array.from(weightInputs).forEach(input => input.disabled = true);
         elements.sampleSize.disabled = true;
         elements.scaleType.disabled = true;
+        if (elements.dataType) elements.dataType.disabled = true;
         
         // إظهار أزرار الحفظ والتحميل
         elements.saveDataBtn.classList.remove('hidden');
         elements.loadDataBtn.classList.remove('hidden');
         
-        showMessage('✓ تم تثبيت الأوزان وحجم العينة ونوع المقياس لجميع الأسئلة القادمة.', 'success');
+        showMessage('✓ تم تثبيت الأوزان وحجم العينة ونوع المقياس وطبيعة البيانات لجميع الأسئلة القادمة.', 'success');
       }
       
       // جمع التكرارات
@@ -1503,13 +1513,14 @@
         return;
       }
       
-      // حساب المؤشرات الإحصائية
-      const stats = calculateStatistics(counts, fixedWeights);
+      // حساب المؤشرات الإحصائية (باستخدام طبيعة البيانات المثبّتة)
+      const stats = calculateStatistics(counts, fixedWeights, fixedDataType);
       
       const questionData = {
         questionNum,
         sampleSize,
         scaleVal,
+        dataType: fixedDataType,
         counts: [...counts],
         stats
       };
@@ -1594,11 +1605,16 @@
      */
     function resetAll() {
       fixedWeights = null;
+      fixedDataType = null;
       questionsData = [];
       editingIndex = -1;
       
       elements.sampleSize.disabled = false;
       elements.scaleType.disabled = false;
+      if (elements.dataType) {
+        elements.dataType.disabled = false;
+        elements.dataType.value = 'sample';
+      }
       elements.sampleSize.value = '';
       elements.scaleType.value = '';
       elements.questionNumber.value = '';
